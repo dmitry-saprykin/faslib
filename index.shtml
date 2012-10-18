@@ -43,7 +43,7 @@ $ git fetch origin
 $ git checkout gh-pages
 </code></pre>
 
-    <div class="sh_cpp"> 
+    <div class="sh_cpp">
     ---
 <![PCDATA[
 #include &lt;iostream&gt;
@@ -88,7 +88,7 @@ int main(int argc, char ** argv) {
     </div>
 
 
-
+  эээээээээээх
   <!--#include file="fas/fasaopgithub.shtml"-->
 
   </body>
