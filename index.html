@@ -7,11 +7,14 @@
     <meta name="description" content="faslib : " />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
+    <link type="text/css" rel="stylesheet" href="stylesheets/sh_nedit.css">
+    <link type="text/css" rel="stylesheet" href="stylesheets/sh_ide-devcpp.css">
+    <script type="text/javascript" src="javascripts/sh_main.js"></script>
+    <script type="text/javascript" src="javascripts/sh_cpp.js"></script>
     <title>faslib</title>
   </head>
 
-  <body>
+  <body onload="sh_highlightDocument();">
 
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
@@ -40,6 +43,21 @@ $ git fetch origin
 $ git checkout gh-pages
 </code></pre>
 
+    <div class="sh_cpp"> 
+    ---
+<![PCDATA[
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int main(int argc, char ** argv) {
+  cout &lt;&lt; "Hello world" &lt;&lt; endl;
+  return 0;
+}
+]]>
+  ---
+</div>
+
 <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
 <h3>Designer Templates</h3>
@@ -59,6 +77,7 @@ $ git checkout gh-pages
 <p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
       </section>
     </div>
+
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
