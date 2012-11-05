@@ -33,161 +33,33 @@
       <section id="main_content" class="inner">
         <h1>faslib</h1>
 
-<p>Библиотека faslib предлагает новый способ модульной разработки программного обеспечения,
-называемый аспекто-ориентированным, используя исключительно конструкции языка C++.</p>
+<p>For aspect-oriented programming on native C++</p>
 
-<p>faslib тестировалась на следующих компиляторах:</p>
+<p>faslib was successfully tested with:</p>
 
 <ul>
 <li>VC10</li>
-<li>g++ 3.3, g++ 4.4, g++ 4.6, g++ 4.7</li>
+<li>g++-3.3 g++-4.7</li>
 <li>MinGW</li>
-</ul><h2>Установка и настройка</h2>
-
-<p>Компиляция не требуется, но необходимо конфигурирование с помощью cmake</p>
+</ul><h2>Getting Started</h2>
 
 <pre><code>git clone git://github.com/migashko/faslib.github
+</code></pre>
+
+<p>For compile tests, tutorial and examples (cmake required):</p>
+
+<pre><code>git clone git://github.com/migashko/faslib.git
 cd faslib
 mkdir build
 cd build
 cmake ..
+make
 </code></pre>
 
-<p>Для компиляции примеров и тестов</p>
+<p>Installation:</p>
 
-<pre><code>make
+<pre><code>make install
 </code></pre>
-
-<p>или по отдельности</p>
-
-<pre><code>make tests
-make examples
-make tutorial
-</code></pre>
-
-<p>для запуска тестов</p>
-
-<pre><code>ctest
-</code></pre>
-
-<h2>Введение</h2>
-
-<p>Основная идея - дать разработчику возможность разрабатывать такие классы, в которых потенциальный пользователь,
-при необходимости, мог бы заменить тот или иной функционал с минимумом издержек.</p>
-
-<p>В качестве примера рассмотрим простой класс:</p>
-
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">foo1</span>
-<span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-  <span class="kt">void</span> <span class="n">method1</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"method-1.1"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-  <span class="kt">void</span> <span class="n">method2</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"method-1.2"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-  <span class="kt">void</span> <span class="n">method3</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"method-1.3"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-<span class="p">};</span>
-</pre></div>
-
-<p>Предположим требуется предоставить пользователю возможность заменить функционал любого методов этого класса.
-Использовать для этого полиморфизм - не лучшая идея, классические стратегии слишком накладно, шаблонные стратегии
-неудобно. Более развернутые примеры (в том числе и с этими вариантами реализации) вы можете найти в <a href="https://github.com/migashko/faslib/tree/master/tutorial/aop">tutorial/aop</a>.</p>
-
-<p>Для наглядности изобразим этот класс на картинке в виде монолитного блока:</p>
-
-<p><img src="https://github.com/migashko/faslib/blob/gh-pages/images/fas/image05.png?raw=true" alt="foo"></p>
-
-<p>Для демонстрации возможностей разработаем класс foo2 с аналогичным функционалом, но используя концепции АОП.
-Сначала разобьем его на составляющие, выделив каждый метод в отдельные сущности которые в faslib называются адвайс-классами:</p>
-
-<p><img src="https://github.com/migashko/faslib/blob/gh-pages/images/fas/image00.png?raw=true" alt="ad_method"></p>
-
-<div class="highlight"><pre><span class="k">struct</span> <span class="n">ad_method1</span>
-<span class="p">{</span>
-  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-  <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span><span class="n">T</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"method-2.1"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="k">struct</span> <span class="n">ad_method2</span>
-<span class="p">{</span>
-  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-  <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span><span class="n">T</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"method-2.2"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="k">struct</span> <span class="n">ad_method3</span>
-<span class="p">{</span>
-  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-  <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span><span class="n">T</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"method-2.3"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-<span class="p">};</span>
-</pre></div>
-
-<p>Каких либо особых требований к адвайс-классам не предъявляется, но использование определенных правил
-при разработке адвайс-классов существенно облегчит жизнь и вам и потенциальным пользователям. Использование перегруженного
-оператора () с первым шаблонным параметром, в который передается контекст вызова (в данном случае это ссылка на foo2) является
-хорошей практикой, даже если в конкретном адвайс-классе он не нужен. Дело в том, что ссылка на контекст может очень понадобиться
-пользователю, который решит заменить ваш адвайс своим. Префикс “ad_” подскажет пользователю, что он имеет дело с адвайс-классом.</p>
-
-<p>Далее для каждого адвайс-класса необходимо создать тег, по которому мы сможем обращаться к нему. Методов у нас три поэтому и
-тегов нам понадобиться тоже как минимум три:</p>
-
-<div class="highlight"><pre><span class="k">struct</span> <span class="n">_method1_</span><span class="p">;</span>
-<span class="k">struct</span> <span class="n">_method2_</span><span class="p">;</span>
-<span class="k">struct</span> <span class="n">_method3_</span><span class="p">;</span>
-</pre></div>
-
-<p>Использование знака “_” для обрамления имени тега, чертовски удобная штука.
-Следующим этапом необходимо связать теги и адвайс-классы, создав таким образом собственно адвайсы:</p>
-
-<p><img src="https://github.com/migashko/faslib/blob/gh-pages/images/fas/image07.png?raw=true" alt="advices"></p>
-
-<div class="highlight"><pre><span class="k">typedef</span> <span class="n">fas</span><span class="o">::</span><span class="n">advice</span><span class="o">&lt;</span><span class="n">_method1_</span><span class="p">,</span> <span class="n">ad_method1</span><span class="o">&gt;</span> <span class="n">method1_advice</span><span class="p">;</span>
-<span class="k">typedef</span> <span class="n">fas</span><span class="o">::</span><span class="n">advice</span><span class="o">&lt;</span><span class="n">_method2_</span><span class="p">,</span> <span class="n">ad_method2</span><span class="o">&gt;</span> <span class="n">method2_advice</span><span class="p">;</span>
-<span class="k">typedef</span> <span class="n">fas</span><span class="o">::</span><span class="n">advice</span><span class="o">&lt;</span><span class="n">_method3_</span><span class="p">,</span> <span class="n">ad_method3</span><span class="o">&gt;</span> <span class="n">method3_advice</span><span class="p">;</span>
-</pre></div>
-
-<p>Далее, необходимо объединить  разрозненные адвайсы в список типов:</p>
-
-<p><img src="https://github.com/migashko/faslib/blob/gh-pages/images/fas/image01.png?raw=true" alt="advice list"></p>
-
-<div class="highlight"><pre><span class="k">typedef</span> <span class="n">fas</span><span class="o">::</span><span class="n">type_list_n</span><span class="o">&lt;</span>
-  <span class="n">method1_advice</span><span class="p">,</span>
-  <span class="n">method2_advice</span><span class="p">,</span>
-  <span class="n">method3_advice</span>
-<span class="o">&gt;::</span><span class="n">type</span> <span class="n">advice_list</span><span class="p">;</span>
-</pre></div>
-
-<p>Cформируем аспект foo2_aspect:</p>
-
-<p><img src="https://github.com/migashko/faslib/blob/gh-pages/images/fas/image06.png?raw=true" alt="foo2_aspect"></p>
-
-<div class="highlight"><pre><span class="k">struct</span> <span class="nl">foo2_aspect:</span> <span class="n">fas</span><span class="o">::</span><span class="n">aspect</span><span class="o">&lt;</span> <span class="n">advice_list</span> <span class="o">&gt;</span><span class="p">{};</span>
-</pre></div>
-
-<p>Ну и наконец разработаем сам аспектный класс foo2, в который внедрим аспект foo2_aspect:</p>
-
-<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">A</span> <span class="o">=</span> <span class="n">fas</span><span class="o">::</span><span class="n">aspect</span><span class="o">&lt;&gt;</span> <span class="o">&gt;</span>
-<span class="k">class</span> <span class="nc">foo2</span>
-  <span class="o">:</span> <span class="k">public</span> <span class="n">fas</span><span class="o">::</span><span class="n">aspect_class</span><span class="o">&lt;</span><span class="n">A</span><span class="p">,</span> <span class="n">foo2_aspect</span><span class="o">&gt;</span>
-<span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-  <span class="kt">void</span> <span class="n">method1</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">get_aspect</span><span class="p">().</span><span class="k">template</span> <span class="n">get</span><span class="o">&lt;</span><span class="n">_method1_</span><span class="o">&gt;</span><span class="p">()(</span> <span class="o">*</span><span class="k">this</span><span class="p">);</span> <span class="p">}</span>
-  <span class="kt">void</span> <span class="n">method2</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">get_aspect</span><span class="p">().</span><span class="k">template</span> <span class="n">get</span><span class="o">&lt;</span><span class="n">_method2_</span><span class="o">&gt;</span><span class="p">()(</span> <span class="o">*</span><span class="k">this</span><span class="p">);</span> <span class="p">}</span>
-  <span class="kt">void</span> <span class="n">method3</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">get_aspect</span><span class="p">().</span><span class="k">template</span> <span class="n">get</span><span class="o">&lt;</span><span class="n">_method3_</span><span class="o">&gt;</span><span class="p">()(</span> <span class="o">*</span><span class="k">this</span><span class="p">);</span> <span class="p">}</span>
-<span class="p">};</span>
-</pre></div>
-
-<p>В реализации методов делегируем вызов необходимому адвайсу. Но в большинстве случаев компилятор выполнит inline подстановку.</p>
-
-<p>Использовать аспектный класс foo2&lt;&gt; не сложнее обычного foo1:</p>
-
-<div class="highlight"><pre>  <span class="n">foo2</span><span class="o">&lt;&gt;</span> <span class="n">f2</span><span class="p">;</span>
-  <span class="n">f2</span><span class="p">.</span><span class="n">method1</span><span class="p">();</span>
-  <span class="n">f2</span><span class="p">.</span><span class="n">method2</span><span class="p">();</span>
-  <span class="n">f2</span><span class="p">.</span><span class="n">method3</span><span class="p">();</span>
-</pre></div>
-
-<p>Класс   foo2&lt;&gt; изобразим следующим образом:</p>
-
-<p><img src="https://github.com/migashko/faslib/blob/gh-pages/images/fas/image03.png?raw=true" alt="foo2_aspect"></p>
-
-<p>Полный пример <a href="https://github.com/migashko/faslib/blob/master/examples/aop/foo.cpp">здесь</a></p>
       </section>
     </div>
 
